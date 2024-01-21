@@ -1,5 +1,5 @@
 controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/NotificationPublisher/Infrastructure/Http/Controller/
+        namespace: App\NotificationPublisher\Infrastructure\Http\Controller
     type: attribute
