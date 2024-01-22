@@ -2,10 +2,8 @@
 
 namespace App\NotificationPublisher\Infrastructure\Client;
 
+use App\NotificationPublisher\Domain\Entity\Notification;
 use Aws\Exception\AwsException;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Contracts\Service;
 use Aws\Ses\SesClient;
 
 class AwsSesClient
@@ -24,56 +22,29 @@ class AwsSesClient
         ]);
     }
 
-    public function send()
+    public function send(Notification $notification): void
     {
         $sender_email = 'lukasz0hanczyk@gmail.com';
-
-        $recipient_emails = ['lukasz0hanczyk@gmail.com'];
-
-        $configuration_set = 'ConfigSet';
-
-        $subject = 'Notification';
-        $plaintext_body = 'This email was sent with Amazon SES using the AWS SDK for PHP.' ;
-        $html_body =  '<h1>AWS Amazon Simple Email Service Test Email</h1>'.
-            '<p>This email was sent with <a href="https://aws.amazon.com/ses/">'.
-            'Amazon SES</a> using the <a href="https://aws.amazon.com/sdk-for-php/">'.
-            'AWS SDK for PHP</a>.</p>';
         $char_set = 'UTF-8';
 
-        try {
-            $result = $this->sesClient->sendEmail([
-                'Destination' => [
-                    'ToAddresses' => $recipient_emails,
-                ],
-                'ReplyToAddresses' => [$sender_email],
-                'Source' => $sender_email,
-                'Message' => [
-                    'Body' => [
-                        'Html' => [
-                            'Charset' => $char_set,
-                            'Data' => $html_body,
-                        ],
-                        'Text' => [
-                            'Charset' => $char_set,
-                            'Data' => $plaintext_body,
-                        ],
-                    ],
-                    'Subject' => [
+        $this->sesClient->sendEmail([
+            'Destination' => [
+                'ToAddresses' => [$notification->getEmail()],
+            ],
+            'ReplyToAddresses' => [$sender_email],
+            'Source' => $sender_email,
+            'Message' => [
+                'Body' => [
+                    'Text' => [
                         'Charset' => $char_set,
-                        'Data' => $subject,
+                        'Data' => $notification->getContent(),
                     ],
                 ],
-                // If you aren't using a configuration set, comment or delete the
-                // following line
-                'ConfigurationSetName' => $configuration_set,
-            ]);
-            $messageId = $result['MessageId'];
-            echo("Email sent! Message ID: $messageId"."\n");
-        } catch (AwsException $e) {
-            // output error message if fails
-            echo $e->getMessage();
-            echo("The email was not sent. Error message: ".$e->getAwsErrorMessage()."\n");
-            echo "\n";
-        }
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $notification->getSubject(),
+                ],
+            ],
+        ]);
     }
 }

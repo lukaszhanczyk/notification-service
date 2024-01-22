@@ -16,8 +16,7 @@ class SendNotificationHandler
 
     public function handle(SendNotificationCommand $command): void
     {
-        $dataToSend = $command->getData();
-
-        $this->awsSesClient->send($dataToSend);
+        $notification = $command->getData();
+        $this->awsSesClient->send($notification);
     }
 }

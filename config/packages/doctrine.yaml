@@ -13,9 +13,10 @@ doctrine:
         mappings:
             NotificationPublisher:
                 is_bundle: false
+                type: annotation
                 dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Entity'
                 prefix: 'App\NotificationPublisher\Infrastructure\Persistence\Entity'
-                alias: NotificationPublisher
+                alias: App
 
 when@test:
     doctrine:
