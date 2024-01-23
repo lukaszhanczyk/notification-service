@@ -14,7 +14,12 @@ class NotificationService
         $this->notificationRepository = $notificationRepository;
     }
 
-    public function createNotification(Notification $notification): void
+    public function findAll(int $page, int $limit): array
+    {
+        return $this->notificationRepository->findAll($page, $limit);
+    }
+
+    public function create(Notification $notification): void
     {
         $this->notificationRepository->create($notification);
     }

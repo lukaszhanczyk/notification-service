@@ -2,6 +2,7 @@
 
 namespace App\NotificationPublisher\Infrastructure\Persistence\Entity;
 
+use App\NotificationPublisher\Application\Dto\NotificationDto;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -157,5 +158,18 @@ class DoctrineNotification
     public function setContent($content): void
     {
         $this->content = $content;
+    }
+
+    public function toDto(): NotificationDto
+    {
+        return new NotificationDto(
+            $this->id ?? null,
+            $this->userId,
+            $this->email,
+            $this->phone,
+            $this->sendingDate->getTimestamp() ?? null,
+            $this->subject,
+            $this->content,
+        );
     }
 }

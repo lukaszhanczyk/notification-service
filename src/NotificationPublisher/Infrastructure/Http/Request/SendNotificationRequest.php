@@ -5,7 +5,7 @@ namespace App\NotificationPublisher\Infrastructure\Http\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class NotificationRequest extends BaseRequest
+class SendNotificationRequest extends BaseRequest
 {
 
     /**

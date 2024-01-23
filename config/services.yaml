@@ -9,6 +9,7 @@ parameters:
     twilio_api_sid: '%env(TWILIO_API_SID)%'
     twilio_api_token: '%env(TWILIO_API_TOKEN)%'
     twilio_api_number: '%env(TWILIO_API_NUMBER)%'
+    is_aws: '%env(TWILIO_API_NUMBER)%'
 
 services:
     # default configuration for services in *this* file

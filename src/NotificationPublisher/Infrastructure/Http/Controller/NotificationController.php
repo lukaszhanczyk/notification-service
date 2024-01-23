@@ -5,9 +5,11 @@ namespace App\NotificationPublisher\Infrastructure\Http\Controller;
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
 use App\NotificationPublisher\Application\Command\SendNotificationCommand;
 use App\NotificationPublisher\Application\Handler\CreateNotificationHandler;
+use App\NotificationPublisher\Application\Handler\GetAllNotificationHandler;
 use App\NotificationPublisher\Application\Handler\SendNotificationHandler;
-use App\NotificationPublisher\Infrastructure\Http\Request\NotificationRequest;
-use Aws\Exception\AwsException;
+use App\NotificationPublisher\Application\Query\GetAllNotificationQuery;
+use App\NotificationPublisher\Infrastructure\Http\Request\GetAllNotificationRequest;
+use App\NotificationPublisher\Infrastructure\Http\Request\SendNotificationRequest;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,18 +20,45 @@ class NotificationController extends AbstractController
 {
     private SendNotificationHandler $sendNotificationHandler;
     private CreateNotificationHandler $createNotificationHandler;
+    private GetAllNotificationHandler $getAllNotificationHandler;
 
     public function __construct(
         SendNotificationHandler $sendNotificationHandler,
-        CreateNotificationHandler $createNotificationHandler
+        CreateNotificationHandler $createNotificationHandler,
+        GetAllNotificationHandler $getAllNotificationHandler
     )
     {
         $this->sendNotificationHandler = $sendNotificationHandler;
         $this->createNotificationHandler = $createNotificationHandler;
+        $this->getAllNotificationHandler = $getAllNotificationHandler;
+    }
+
+    #[Route('/history', name: 'api_notification_history', methods: ['GET'])]
+    public function history(GetAllNotificationRequest $request): Response
+    {
+        if ($request->validate()){
+            return $this->json([
+                'errors' => $request->validate()
+            ],500);
+        }
+
+        $params = [
+            'page' => $request->getRequest()->query->get('page') ?? '1',
+            'limit' => $request->getRequest()->query->get('limit') ?? '20'
+        ];
+
+        $getAllNotificationQuery = new GetAllNotificationQuery($params);
+        $notifications = $this->getAllNotificationHandler->handle($getAllNotificationQuery);
+
+
+        return $this->json([
+            'data' => $notifications,
+            'pagination' => $params
+        ]);
     }
 
     #[Route('/send', name: 'api_notification_send', methods: ['POST'])]
-    public function send(NotificationRequest $request, RateLimiterFactory $anonymousApiLimiter): Response
+    public function send(SendNotificationRequest $request, RateLimiterFactory $anonymousApiLimiter): Response
     {
 
         if ($request->validate()){
@@ -52,15 +81,6 @@ class NotificationController extends AbstractController
         try {
             $sendNotificationCommand = new SendNotificationCommand($data);
             $this->sendNotificationHandler->handle($sendNotificationCommand);
-        } catch (AwsException $e){
-            return $this->json([
-                'errors' => [[
-                    'message' => $e->getMessage()
-                ]]
-            ],500);
-        }
-
-        try {
             $createNotificationCommand = new CreateNotificationCommand($data);
             $this->createNotificationHandler->handle($createNotificationCommand);
         } catch (Exception $e){

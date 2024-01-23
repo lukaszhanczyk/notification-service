@@ -3,9 +3,10 @@
 namespace App\NotificationPublisher\Application\Handler;
 
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
+use App\NotificationPublisher\Application\Query\GetAllNotificationQuery;
 use App\NotificationPublisher\Application\Service\NotificationService;
 
-class CreateNotificationHandler
+class GetAllNotificationHandler
 {
     private NotificationService $notificationService;
 
@@ -14,9 +15,10 @@ class CreateNotificationHandler
         $this->notificationService = $notificationService;
     }
 
-    public function handle(CreateNotificationCommand $command): void
+    public function handle(GetAllNotificationQuery $query): array
     {
-        $notification = $command->getData();
-        $this->notificationService->create($notification);
+        $page = $query->getPage();
+        $limit = $query->getLimit();
+        return $this->notificationService->findAll($page, $limit);
     }
 }
