@@ -7,16 +7,21 @@ use App\NotificationPublisher\Infrastructure\Client\AwsSesClient;
 
 class SendNotificationHandler
 {
-    private AwsSesClient $awsSesClient;
+    private SendNotificationTwilioHandler $sendNotificationTwilioHandler;
+    private SendNotificationAwsSesHandler $sendNotificationAwsSesHandler;
 
-    public function __construct(AwsSesClient $awsSesClient)
+    public function __construct(
+        SendNotificationTwilioHandler $sendNotificationTwilioHandler,
+        SendNotificationAwsSesHandler $sendNotificationAwsSesHandler,
+    )
     {
-        $this->awsSesClient = $awsSesClient;
+        $this->sendNotificationTwilioHandler = $sendNotificationTwilioHandler;
+        $this->sendNotificationAwsSesHandler = $sendNotificationAwsSesHandler;
     }
 
     public function handle(SendNotificationCommand $command): void
     {
-        $notification = $command->getData();
-        $this->awsSesClient->send($notification);
+        $this->sendNotificationTwilioHandler->handle($command);
+        $this->sendNotificationAwsSesHandler->handle($command);
     }
 }

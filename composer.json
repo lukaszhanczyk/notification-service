@@ -25,6 +25,7 @@
         "symfony/framework-bundle": "6.2.*",
         "symfony/http-client": "6.2.*",
         "symfony/intl": "6.2.*",
+        "symfony/lock": "6.2.*",
         "symfony/mailer": "6.2.*",
         "symfony/mime": "6.2.*",
         "symfony/monolog-bundle": "^3.0",
@@ -32,6 +33,7 @@
         "symfony/process": "6.2.*",
         "symfony/property-access": "6.2.*",
         "symfony/property-info": "6.2.*",
+        "symfony/rate-limiter": "6.2.*",
         "symfony/runtime": "6.2.*",
         "symfony/security-bundle": "6.2.*",
         "symfony/serializer": "6.2.*",
@@ -42,7 +44,8 @@
         "symfony/web-link": "6.2.*",
         "symfony/yaml": "6.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "twilio/sdk": "^7.13"
     },
     "config": {
         "allow-plugins": {

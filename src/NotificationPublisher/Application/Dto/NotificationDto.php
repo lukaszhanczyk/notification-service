@@ -7,6 +7,7 @@ class NotificationDto
     private ?int $id;
     private string $userId;
     private string $email;
+    private string $phone;
     private ?string $sendingDate;
     private string $subject;
     private string $content;
@@ -15,15 +16,17 @@ class NotificationDto
      * @param int|null $id
      * @param string $userId
      * @param string $email
+     * @param string $phone
      * @param string|null $sendingDate
      * @param string $subject
      * @param string $content
      */
-    public function __construct(?int $id, string $userId, string $email, ?string $sendingDate, string $subject, string $content)
+    public function __construct(?int $id, string $userId, string $email, string $phone, ?string $sendingDate, string $subject, string $content)
     {
         $this->id = $id;
         $this->userId = $userId;
         $this->email = $email;
+        $this->phone = $phone;
         $this->sendingDate = $sendingDate;
         $this->subject = $subject;
         $this->content = $content;
@@ -75,6 +78,16 @@ class NotificationDto
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
     }
 
     /**

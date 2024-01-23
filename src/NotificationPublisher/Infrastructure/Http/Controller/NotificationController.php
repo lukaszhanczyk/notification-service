@@ -11,6 +11,7 @@ use Aws\Exception\AwsException;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 
 class NotificationController extends AbstractController
@@ -27,9 +28,10 @@ class NotificationController extends AbstractController
         $this->createNotificationHandler = $createNotificationHandler;
     }
 
-    #[Route('/notification', name: 'api_notification', methods: ['POST'])]
-    public function notification(NotificationRequest $request): Response
+    #[Route('/send', name: 'api_notification_send', methods: ['POST'])]
+    public function send(NotificationRequest $request, RateLimiterFactory $anonymousApiLimiter): Response
     {
+
         if ($request->validate()){
             return $this->json([
                     'errors' => $request->validate()
@@ -37,6 +39,15 @@ class NotificationController extends AbstractController
         }
 
         $data = json_decode($request->getRequest()->getContent(), true);
+
+        $limiter = $anonymousApiLimiter->create($data['userId']);
+        if (false === $limiter->consume()->isAccepted()) {
+            return $this->json([
+                'errors' => [[
+                    'message' => "To many request per user with id: " . $data['userId']
+                ]]
+            ],429);
+        }
 
         try {
             $sendNotificationCommand = new SendNotificationCommand($data);

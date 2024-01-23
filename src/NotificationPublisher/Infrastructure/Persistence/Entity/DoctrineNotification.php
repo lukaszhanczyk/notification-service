@@ -28,6 +28,11 @@ class DoctrineNotification
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phone;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $sendingDate;
@@ -88,6 +93,22 @@ class DoctrineNotification
     public function setEmail($email): void
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
     }
 
     /**

@@ -38,6 +38,16 @@ class NotificationRequest extends BaseRequest
      *        max = 255,
      *   )
      **/
+    protected $phone;
+
+    /**
+     * @Assert\NotNull
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *        min = 1,
+     *        max = 255,
+     *   )
+     **/
     protected $subject;
 
     /**

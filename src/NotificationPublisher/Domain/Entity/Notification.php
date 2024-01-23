@@ -9,6 +9,7 @@ class Notification
     private ?int $id;
     private string $userId;
     private string $email;
+    private string $phone;
     private string $sendingDate;
     private string $subject;
     private string $content;
@@ -59,6 +60,22 @@ class Notification
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
     }
 
     /**
@@ -115,6 +132,7 @@ class Notification
             $this->id ?? null,
             $this->userId,
             $this->email,
+            $this->phone,
             $this->sendingDate ?? null,
             $this->subject,
             $this->content,

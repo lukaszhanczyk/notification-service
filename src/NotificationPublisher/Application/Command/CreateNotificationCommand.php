@@ -15,6 +15,7 @@ class CreateNotificationCommand
         $this->data->setSubject($data['subject']);
         $this->data->setContent($data['content']);
         $this->data->setEmail($data['email']);
+        $this->data->setPhone($data['phone']);
     }
 
     public function getData(): Notification
