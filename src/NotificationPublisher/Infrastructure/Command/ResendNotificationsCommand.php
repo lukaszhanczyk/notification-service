@@ -9,13 +9,14 @@ use App\NotificationPublisher\Application\Handler\SendNotificationHandler;
 use App\NotificationPublisher\Application\Handler\UpdateNotificationHandler;
 use App\NotificationPublisher\Application\Query\GetAllByStatusNotificationQuery;
 use App\NotificationPublisher\Infrastructure\Configurator\ResendNotificationsConfigurator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:resend-notifications')]
 class ResendNotificationsCommand extends Command
 {
-    protected static $defaultName = 'app:resend-notifications';
     private ResendNotificationsConfigurator $resendNotificationsConfigurator;
     private GetAllByStatusNotificationHandler $getAllByStatusNotificationHandler;
     private UpdateNotificationHandler $updateNotificationHandler;
