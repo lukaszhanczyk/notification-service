@@ -37,9 +37,7 @@ class NotificationController extends AbstractController
     public function history(GetAllNotificationRequest $request): Response
     {
         if ($request->validate()){
-            return $this->json([
-                'errors' => $request->validate()
-            ],500);
+            return $this->json(['errors' => $request->validate()],500);
         }
 
         $params = [
@@ -62,9 +60,7 @@ class NotificationController extends AbstractController
     {
 
         if ($request->validate()){
-            return $this->json([
-                    'errors' => $request->validate()
-                ],500);
+            return $this->json(['errors' => $request->validate()],500);
         }
 
         $data = json_decode($request->getRequest()->getContent(), true);
@@ -78,21 +74,11 @@ class NotificationController extends AbstractController
             ],429);
         }
 
-        try {
-            $sendNotificationCommand = new SendNotificationCommand($data);
-            $this->sendNotificationHandler->handle($sendNotificationCommand);
-            $createNotificationCommand = new CreateNotificationCommand($data);
-            $this->createNotificationHandler->handle($createNotificationCommand);
-        } catch (Exception $e){
-            return $this->json([
-                'errors' => [[
-                    'message' => $e->getMessage()
-                ]]
-            ],500);
-        }
+        $sendNotificationCommand = new SendNotificationCommand($data);
+        $response = $this->sendNotificationHandler->handle($sendNotificationCommand);
+        $createNotificationCommand = new CreateNotificationCommand($data, $response['data']['status']);
+        $this->createNotificationHandler->handle($createNotificationCommand);
 
-        return $this->json([
-            'success' => 'Notification sent correctly'
-        ], 200);
+        return $this->json($response['data'], $response['code']);
     }
 }

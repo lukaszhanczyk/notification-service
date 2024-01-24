@@ -38,6 +38,8 @@ class DoctrineNotificationRepository implements NotificationRepository
             $notification->setUserId($notificationDto->getUserId());
             $notification->setEmail($notificationDto->getEmail());
             $notification->setSendingDate($notificationDto->getSendingDate());
+            $notification->setAttempts($notificationDto->getAttempts());
+            $notification->setStatus($notificationDto->getStatus());
             $notifications[] = $notification;
         }
 
@@ -54,6 +56,8 @@ class DoctrineNotificationRepository implements NotificationRepository
         $doctrineNotification->setEmail($notificationDto->getEmail());
         $doctrineNotification->setPhone($notificationDto->getPhone());
         $doctrineNotification->setSendingDate((new DateTime('now')));
+        $doctrineNotification->setAttempts(1);
+        $doctrineNotification->setStatus($notificationDto->getStatus());
 
         $this->entityManager->persist($doctrineNotification);
         $this->entityManager->flush();

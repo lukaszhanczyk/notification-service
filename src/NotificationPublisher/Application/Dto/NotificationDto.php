@@ -11,6 +11,8 @@ class NotificationDto
     private ?string $sendingDate;
     private string $subject;
     private string $content;
+    private ?int $attempts;
+    private ?string $status;
 
     /**
      * @param int|null $id
@@ -20,8 +22,20 @@ class NotificationDto
      * @param string|null $sendingDate
      * @param string $subject
      * @param string $content
+     * @param int|null $attempts
+     * @param string|null $status
      */
-    public function __construct(?int $id, string $userId, string $email, string $phone, ?string $sendingDate, string $subject, string $content)
+    public function __construct(
+        ?int $id,
+        string $userId,
+        string $email,
+        string $phone,
+        ?string $sendingDate,
+        string $subject,
+        string $content,
+        ?int $attempts,
+        ?string $status
+    )
     {
         $this->id = $id;
         $this->userId = $userId;
@@ -30,20 +44,22 @@ class NotificationDto
         $this->sendingDate = $sendingDate;
         $this->subject = $subject;
         $this->content = $content;
+        $this->attempts = $attempts;
+        $this->status = $status;
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int|null $id
      */
-    public function setId($id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -75,7 +91,7 @@ class NotificationDto
     /**
      * @param string $email
      */
-    public function setEmail(string $email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -137,4 +153,26 @@ class NotificationDto
     {
         $this->subject = $subject;
     }
+
+    public function getAttempts(): ?int
+    {
+        return $this->attempts;
+    }
+
+    public function setAttempts(?int $attempts): void
+    {
+        $this->attempts = $attempts;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
+    }
+
+
 }

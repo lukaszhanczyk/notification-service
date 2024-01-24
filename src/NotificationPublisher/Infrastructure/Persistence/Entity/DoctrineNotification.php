@@ -49,6 +49,16 @@ class DoctrineNotification
     private $content;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $attempts;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -160,6 +170,38 @@ class DoctrineNotification
         $this->content = $content;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAttempts()
+    {
+        return $this->attempts;
+    }
+
+    /**
+     * @param mixed $attempts
+     */
+    public function setAttempts($attempts): void
+    {
+        $this->attempts = $attempts;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
     public function toDto(): NotificationDto
     {
         return new NotificationDto(
@@ -170,6 +212,8 @@ class DoctrineNotification
             $this->sendingDate->getTimestamp() ?? null,
             $this->subject,
             $this->content,
+            $this->attempts,
+            $this->status,
         );
     }
 }

@@ -9,7 +9,8 @@ parameters:
     twilio_api_sid: '%env(TWILIO_API_SID)%'
     twilio_api_token: '%env(TWILIO_API_TOKEN)%'
     twilio_api_number: '%env(TWILIO_API_NUMBER)%'
-    is_aws: '%env(TWILIO_API_NUMBER)%'
+    is_aws_ses_open: false
+    is_twilio_open: false
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +23,8 @@ services:
             $twilioApiSid: '%twilio_api_sid%'
             $twilioApiToken: '%twilio_api_token%'
             $twilioApiNumber: '%twilio_api_number%'
+            $isAwsSesOpen: '%is_aws_ses_open%'
+            $isTwilioOpen: '%is_twilio_open%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

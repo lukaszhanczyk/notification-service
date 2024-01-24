@@ -13,6 +13,8 @@ class Notification
     private string $sendingDate;
     private string $subject;
     private string $content;
+    private ?int $attempts;
+    private ?string $status;
 
     /**
      * @return int|null
@@ -126,6 +128,27 @@ class Notification
         $this->content = $content;
     }
 
+    public function getAttempts(): ?int
+    {
+        return $this->attempts;
+    }
+
+    public function setAttempts(?int $attempts): void
+    {
+        $this->attempts = $attempts;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
+    }
+
+
     public function toDto(): NotificationDto
     {
         return new NotificationDto(
@@ -136,6 +159,8 @@ class Notification
             $this->sendingDate ?? null,
             $this->subject,
             $this->content,
+            $this->attempts ?? null,
+            $this->status ?? null,
         );
     }
 }
