@@ -19,8 +19,18 @@ class NotificationService
         return $this->notificationRepository->findAll($page, $limit);
     }
 
+    public function findAllByStatus(string $status): array
+    {
+        return $this->notificationRepository->findAllByStatus($status);
+    }
+
     public function create(Notification $notification): void
     {
         $this->notificationRepository->create($notification);
+    }
+
+    public function update(Notification $notification): void
+    {
+        $this->notificationRepository->update($notification);
     }
 }

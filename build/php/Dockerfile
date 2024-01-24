@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libxml2-dev \
 		libzip-dev \
 		libpq-dev \
+        cron \
+        vim\
 	&& docker-php-ext-install \
 		zip \
 		pdo  \

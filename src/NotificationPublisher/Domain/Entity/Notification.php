@@ -148,6 +148,20 @@ class Notification
         $this->status = $status;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id ?? null,
+            'userId' => $this->userId,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'sendingDate' => $this->sendingDate ?? null,
+            'subject' => $this->subject,
+            'content' => $this->content,
+            'attempts' => $this->attempts ?? null,
+            'status' => $this->status ?? null,
+        ];
+    }
 
     public function toDto(): NotificationDto
     {

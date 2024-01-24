@@ -10,7 +10,6 @@ use App\NotificationPublisher\Application\Handler\SendNotificationHandler;
 use App\NotificationPublisher\Application\Query\GetAllNotificationQuery;
 use App\NotificationPublisher\Infrastructure\Http\Request\GetAllNotificationRequest;
 use App\NotificationPublisher\Infrastructure\Http\Request\SendNotificationRequest;
-use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -76,6 +75,7 @@ class NotificationController extends AbstractController
 
         $sendNotificationCommand = new SendNotificationCommand($data);
         $response = $this->sendNotificationHandler->handle($sendNotificationCommand);
+
         $createNotificationCommand = new CreateNotificationCommand($data, $response['data']['status']);
         $this->createNotificationHandler->handle($createNotificationCommand);
 
