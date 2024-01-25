@@ -146,7 +146,7 @@ Sample request:
 
 #### `POST` /send
 
-- Endpoint for downloading the history of paginated notifications</br></br>
+- Endpoint for downloading the history of paginated notifications</br>* if we want the email to be sent correctly, the only supported email is (test.notification.service00@gmail.com) because it is listed as verified in AWS SES. The website operates in sandbox mode</br></br>
   Sample request body:
    ```bash
    {
